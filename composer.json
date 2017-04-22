@@ -12,5 +12,10 @@
             "email": "rvn.plvhx@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Iodine\\Http\\Psr7\\": "src/"
+        }
+    }
 }
