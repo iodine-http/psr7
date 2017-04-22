@@ -1,0 +1,16 @@
+{
+    "name": "iodine-http/psr7",
+    "description": "PSR-7 Compliant Message Implementation",
+    "type": "library",
+    "require": {
+        "psr/http-message": "^1.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paulus Gandung Prakosa",
+            "email": "rvn.plvhx@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
