@@ -325,4 +325,42 @@ class Uri implements UriInterface
 
 		$this->host = $this->validateHost($this->host);
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	private function unify($scheme, $authority, $path, $query, $fragment)
+	{
+		$uri = '';
+
+		if ($scheme !== '')
+			$uri .= $scheme . ':';
+
+		if ($authority !== '' || $scheme === 'file')
+			$uri .= '//' . $authority;
+
+		$uri .= $path;
+
+		if ($query !== '')
+			$uri .= '?' . $query;
+
+		if ($fragment !== '')
+			$uri .= '#' . $fragment;
+
+		return $uri;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function __toString()
+	{
+		return $this->unify(
+			$this->scheme,
+			$this->getAuthority(),
+			$this->path,
+			$this->query,
+			$this->fragment
+		);
+	}
 }
