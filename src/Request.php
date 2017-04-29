@@ -54,16 +54,6 @@ class Request implements RequestInterface
 	const RFC7230_URI_ORIGIN_PATTERN = '~(?:(?:\/{1}[A-Za-z0-9\.\-\_]+)+)\?(?:(?:[a-zA-Z0-9\-\_]+\=[a-zA-Z0-9\-\_]+\&?)+)~';
 
 	/**
-	 * @var $patternMap
-	 */
-	private $patternMap = [
-		'origin' => self::RFC7230_URI_ORIGIN_PATTERN,
-		'absolute' => self::RFC7230_URI_ABSOLUTE_PATTERN,
-		'authority' => self::RFC7230_URI_AUTHORITY_PATTERN,
-		'asterisk' => self::RFC7230_URI_WILDCARD_PATTERN
-	];
-
-	/**
 	 * @var $requestTarget
 	 */
 	private $requestTarget;
@@ -202,16 +192,16 @@ class Request implements RequestInterface
 	 */
 	private function validateUri($uri)
 	{
-		if (preg_match($this->patternMap['origin'], $uri, $matches))
+		if (preg_match(self::RFC7230_URI_ORIGIN_PATTERN, $uri, $matches))
 			return $matches[0];
 
-		if (preg_match($this->patternMap['absolute'], $uri, $matches))
+		if (preg_match(self::RFC7230_URI_ABSOLUTE_PATTERN, $uri, $matches))
 			return $matches[0];
 
-		if (preg_match($this->patternMap['authority'], $uri, $matches))
+		if (preg_match(self::RFC7230_URI_AUTHORITY_PATTERN, $uri, $matches))
 			return $matches[0];
 
-		if (preg_match($this->patternMap['asterisk'], $uri, $matches))
+		if (preg_match(self::RFC7230_URI_WILDCARD_PATTERN, $uri, $matches))
 			return $matches[0];
 
 		return false;
