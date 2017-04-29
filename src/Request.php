@@ -57,10 +57,10 @@ class Request implements RequestInterface
 	 * @var $patternMap
 	 */
 	private $patternMap = [
-		'origin' => RFC7230_URI_ORIGIN_PATTERN,
-		'absolute' => RFC7230_URI_ABSOLUTE_PATTERN,
-		'authority' => RFC7230_URI_AUTHORITY_PATTERN,
-		'asterisk' => RFC7230_URI_WILDCARD_PATTERN
+		'origin' => self::RFC7230_URI_ORIGIN_PATTERN,
+		'absolute' => self::RFC7230_URI_ABSOLUTE_PATTERN,
+		'authority' => self::RFC7230_URI_AUTHORITY_PATTERN,
+		'asterisk' => self::RFC7230_URI_WILDCARD_PATTERN
 	];
 
 	/**
