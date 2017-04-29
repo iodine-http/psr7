@@ -36,6 +36,13 @@ class Uri implements UriInterface
 	const HOST_IPv4_PATTERN = '~^(?:\d{1,3})\.(?:\d{1,3})\.(?:\d{1,3})\.(?:\d{1,3})$~';
 
 	/**
+	 * IPv4-based host alternate pattern.
+	 *
+	 * @author awan (nawa@yahoo.com)
+	 */
+	const HOST_IPv4_ALTERNATE_PATTERN = '~^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\.|$)){4}$~';
+
+	/**
 	 * Host-based host pattern.
 	 */
 	const HOST_RESOLVED_PATTERN = '~(?:(?:[a-z0-9]+\.?))+~';
@@ -295,6 +302,10 @@ class Uri implements UriInterface
 	private function validateHost($host)
 	{
 		if (preg_match(self::HOST_IPv4_PATTERN, $host, $matches)) {
+			return $matches[0];
+		}
+
+		if (preg_match(self::HOST_IPv4_ALTERNATE_PATTERN, $host, $matches)) {
 			return $matches[0];
 		}
 
