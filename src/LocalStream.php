@@ -332,7 +332,13 @@ class LocalStream implements StreamInterface, LocalStreamAwareInterface
      */
     public function getMetadata($key = null)
     {
-        // TODO: Implement getMetadata() method.
+        if ($key === null)
+            return $this->metadata;
+
+        if (array_key_exists($key, $this->metadata))
+            return $this->metadata[$key];
+
+        return null;
     }
 
     /**
