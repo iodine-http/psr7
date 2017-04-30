@@ -147,7 +147,8 @@ class LocalStream implements StreamInterface, LocalStreamAwareInterface
      */
     public function detach()
     {
-        // TODO: Implement detach() method.
+        $this->stream = null;
+        $this->metadata = $this->stat = $this->seekable = $this->size = null;
     }
 
     /**
