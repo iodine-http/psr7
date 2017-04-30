@@ -28,7 +28,7 @@ namespace Iodine\Http\Psr7;
 
 use Psr\Http\Message\StreamInterface;
 
-class LocalStream implements StreamInterface
+class LocalStream implements StreamInterface, LocalStreamAwareInterface
 {
 
     /**
@@ -251,6 +251,9 @@ class LocalStream implements StreamInterface
      */
     public function write($string)
     {
+        if (!$this->isLocalStream())
+            throw new \RuntimeException("Stream is not local.");
+
         if (!$this->isWritable())
             throw new \RuntimeException("\$this->stream is not writable.");
 
@@ -330,5 +333,15 @@ class LocalStream implements StreamInterface
     public function getMetadata($key = null)
     {
         // TODO: Implement getMetadata() method.
+    }
+
+    /**
+     * Determine if supplied stream is local.
+     *
+     * @return bool Returns true is supplied stream is local, otherwise false.
+     */
+    public function isLocalStream()
+    {
+        return stream_is_local($this->stream);
     }
 }
