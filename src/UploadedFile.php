@@ -31,6 +31,9 @@ use Psr\Http\Message\UploadedFileInterface;
 
 class UploadedFile implements UploadedFileInterface
 {
+    /**
+     * @var array
+     */
     private $errors = array(
         UPLOAD_ERR_OK,
         UPLOAD_ERR_INI_SIZE,
@@ -93,8 +96,8 @@ class UploadedFile implements UploadedFileInterface
         $this->errno = $errno;
         $this->size = $size;
 
-        if ($this->errno === self::UPLOAD_ERR_OK) {
-
+        if ($this->errno === UPLOAD_ERR_OK) {
+            $this->stream = $this->getStream();
         }
     }
 
@@ -116,10 +119,10 @@ class UploadedFile implements UploadedFileInterface
      */
     public function getStream()
     {
-        if (!is_resource($this->stream))
-            throw new \RuntimeException("No stream available.");
+        if ($this->stream instanceof StreamInterface)
+            return $this->stream;
 
-        return $this->stream;
+        return new LocalStream($this->tempFile, 'r+');
     }
 
     /**
@@ -156,7 +159,20 @@ class UploadedFile implements UploadedFileInterface
      */
     public function moveTo($targetPath)
     {
-        // TODO: Implement moveTo() method.
+        $this->hasMoved = (php_sapi_name() === 'cli' ? rename($this->tempName, $this->filename)
+            : move_uploaded_file($this->tempName, $targetPath));
+
+        if (!$this->hasMoved) {
+            $this->hasMoved = stream_copy_to_stream(
+                $this->getStream(), new LocalStream($targetPath)
+            );
+
+            if (!$this->hasMoved) {
+                throw new \RuntimeException(
+                    sprintf("Uploaded file count not be moved to %s", $targetPath)
+                );
+            }
+        }
     }
 
     /**
