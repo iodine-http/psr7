@@ -59,7 +59,7 @@ class Request implements RequestInterface
 	private $requestTarget;
 
 	/**
-	 * @var Psr\Http\Message\UriInterface $uri
+	 * @var UriInterface $uri
 	 */
 	private $uri;
 

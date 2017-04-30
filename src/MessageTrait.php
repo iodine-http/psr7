@@ -1,5 +1,7 @@
 <?php
 
+namespace Iodine\Http\Psr7;
+
 /*
  * This file is a part of Iodine HTTP Client Library.
  *
@@ -24,8 +26,6 @@
  * SOFTWARE.
  */
 
-namespace Iodine\Http\Psr7;
-
 use Psr\Http\Message\StreamInterface;
 
 trait MessageTrait
@@ -43,7 +43,7 @@ trait MessageTrait
 	private $headers = array();
 
 	/**
-	 * @var Psr\Http\Message\StreamInterface $stream
+	 * @var StreamInterface $stream
 	 */
 	private $stream;
 
@@ -84,7 +84,7 @@ trait MessageTrait
 	{
 		$headerName = array_map(function($q) { return strtolower($q); }, array_keys($this->headers));
 
-		return in_array($header, $headerName, true);
+		return in_array($name, $headerName, true);
 	}
 
 	/**

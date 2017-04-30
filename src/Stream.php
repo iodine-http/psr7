@@ -225,9 +225,9 @@ class Stream implements StreamInterface
 		$sz = fwrite($this->stream, $string);
 
 		if (!$sz)
-			throw new \RuntimeException("Unable to write to current strema handle.");
+			throw new \RuntimeException("Unable to write to current stream handle.");
 
-		return $result;
+		return $sz;
 	}
 
 	/**
