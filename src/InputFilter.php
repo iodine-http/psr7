@@ -48,6 +48,9 @@ class InputFilter
 	 */
 	private $server = array();
 
+    /**
+     * @return static
+     */
 	public static function create()
 	{
 		return new static;
