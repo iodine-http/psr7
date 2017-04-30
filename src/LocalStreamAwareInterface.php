@@ -31,8 +31,7 @@ interface LocalStreamAwareInterface
     /**
      * Determine if supplied stream is local.
      *
-     * @param resource $stream Stream handle.
      * @return bool Returns true is supplied stream is local, otherwise false.
      */
-    public function isLocalStream($stream);
+    public function isLocalStream();
 }
