@@ -35,6 +35,30 @@ trait StreamDecoratorTrait
      */
     private $stream;
 
+    /**
+     * @var array
+     */
+    private $metadata;
+
+    /**
+     * @var array
+     */
+    private $stat;
+
+    /**
+     * @var string
+     */
+    private $mode;
+
+    /**
+     * @var bool
+     */
+    private $seekable;
+
+    /**
+     * @var integer
+     */
+    private $size;
 
     /**
      * {@inheritdoc}
