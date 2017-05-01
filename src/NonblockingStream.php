@@ -55,6 +55,6 @@ class NonblockingStream implements StreamInterface
         $this->stat = fstat($this->stream);
         $this->seekable = ($this->metadata['seekable'] === 1 ? true : false);
         $this->mode = $this->metadata['mode'];
-        $this->size = $this->stat['size'];
+        $this->size = (int)$this->stat['size'];
     }
 }
