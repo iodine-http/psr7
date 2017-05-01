@@ -97,8 +97,11 @@ trait MessageTrait
 
 		$name = strtolower($name);
 		$header = array_merge(
-			array_map(function($q) { return strtolower($q); }, array_keys($this->headers)),
-			array_values($this->headers)
+			array_map(function($q) {
+			    return strtolower($q);
+            },
+            array_keys($this->headers)),
+        array_values($this->headers)
 		);
 
 		return is_array($header[$name]) ? $header[$name] : array($header[$name]);
