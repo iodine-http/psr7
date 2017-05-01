@@ -68,7 +68,16 @@ trait StreamDecoratorTrait
      */
     public function detach()
     {
+        if ($this->stream === null) {
+            return null;
+        }
 
+        $result = $this->stream;
+        $this->metadata = $this->stat = null;
+        $this->mode = $this->seekable = null;
+        $this->size = $this->stream = null;
+
+        return $result;
     }
 
     /**
