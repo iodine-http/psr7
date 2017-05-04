@@ -51,7 +51,7 @@ class InputFilter
     /**
      * @return static
      */
-	public static function create()
+	public static function createFromGlobals()
 	{
 		return new static;
 	}
@@ -112,22 +112,18 @@ class InputFilter
 		return $q;
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getParams($opt = 'get')
-	{
-		if ($opt === 'get') {
-			return $this->get;
-		}
-		else if ($opt === 'post') {
-			return $this->post;
-		}
-		else if ($opt === 'cookie') {
-			return $this->cookie;
-		}
-		else if ($opt === 'server') {
-			return $this->server;
-		}
-	}
+    /**
+     * Return existing property if exists.
+     *
+     * @param string $name
+     * @return mixed|null
+     * @throws \InvalidArgumentException if the method trying to access nonexisting variable.
+     */
+	public function __get($name)
+    {
+        if (!property_exists($this, $name))
+            throw new \InvalidArgumentException("Unable to access nonexistent variable {$name}");
+
+        return $this->{$name};
+    }
 }
