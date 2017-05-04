@@ -53,7 +53,11 @@ class InputFilter
      */
 	public static function createFromGlobals()
 	{
-		return new static;
+	    return (new static)
+            ->withGetParams()
+            ->withPostParams()
+            ->withCookieParams()
+            ->withServerParams();
 	}
 
 	/**
