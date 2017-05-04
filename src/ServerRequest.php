@@ -51,16 +51,12 @@ class ServerRequest extends Request implements ServerRequestInterface
 	 */
 	public function __construct(array $serverParams = [])
 	{
-		$this->filter = InputFilter::create()
-			->withGetParams()
-			->withPostParams()
-			->withCookieParams()
-			->withServerParams();
+		$this->filter = InputFilter::createFromGlobals();
 
 		$this->serverParams = (empty($serverParams) ?
-			$this->filter->getParams('server') : $serverParams);
+			$this->filter->server : $serverParams);
 
-		$this->cookieParams = $this->filter->getParams('cookie');
+		$this->cookieParams = $this->filter->cookie;
 		$this->uploadedFiles = $this->normalizeUploadedFiles($_FILES);
 
 		parent::__construct(
