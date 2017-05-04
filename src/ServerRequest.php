@@ -31,6 +31,16 @@ use Psr\Http\Message\UploadedFileInterface;
 
 class ServerRequest extends Request implements ServerRequestInterface
 {
+    /**
+     * @var null|array|object
+     */
+    private $parsedBody;
+
+    /**
+     * @var array
+     */
+    private $attribute = array();
+
 	/**
 	 * @var $serverParams
 	 */
@@ -243,7 +253,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getParsedBody()
     {
-        // TODO: Implement getParsedBody() method.
+        return $this->parsedBody;
     }
 
     /**
@@ -276,7 +286,10 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function withParsedBody($data)
     {
-        // TODO: Implement withParsedBody() method.
+        $q = clone $this;
+        $q->parsedBody = $data;
+
+        return $q;
     }
 
     /**
@@ -292,7 +305,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getAttributes()
     {
-        // TODO: Implement getAttributes() method.
+        return $this->attribute;
     }
 
     /**
@@ -312,7 +325,11 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getAttribute($name, $default = null)
     {
-        // TODO: Implement getAttribute() method.
+        if (!array_key_exists($name, $this->attribute)) {
+            return $default;
+        }
+
+        return $this->attribute[$name];
     }
 
     /**
@@ -332,7 +349,10 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function withAttribute($name, $value)
     {
-        // TODO: Implement withAttribute() method.
+        $q = clone $this;
+        $q->attribute[$name] = $value;
+
+        return $q;
     }
 
     /**
@@ -351,6 +371,14 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function withoutAttribute($name)
     {
-        // TODO: Implement withoutAttribute() method.
+        if (!array_key_exists($name, $this->attribute)) {
+            return $this;
+        }
+
+        $q = clone $this;
+
+        unset($q->attribute[$name]);
+
+        return $q;
     }
 }
