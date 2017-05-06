@@ -45,7 +45,7 @@ class Uri implements UriInterface
 	/**
 	 * Host-based host pattern.
 	 */
-	const HOST_RESOLVED_PATTERN = '~(?:(?:[a-z0-9]+\.?))+~';
+	const HOST_RESOLVED_PATTERN = '~(?:(?:[a-z0-9]+\.?)+)~';
 
 	/**
 	 * @var $scheme
@@ -89,17 +89,15 @@ class Uri implements UriInterface
 
 	public function __construct($uri = '')
 	{
-		if (empty($uri)) {
-			// throw the exception here..
-		}
+		if (!empty($uri)) {
+            $uri_parts = parse_url($uri);
 
-		$uri_parts = parse_url($uri);
+            if (false === $uri_parts) {
+                throw new \InvalidArgumentException("Unable to parse URI: {$uri}");
+            }
 
-		if (false === $uri_parts) {
-			throw new \InvalidArgumentException("Unable to parse URI: {$uri}");
-		}
-
-		$this->apply($uri_parts);
+            $this->apply($uri_parts);
+        }
 	}
 
 	/**
@@ -117,17 +115,17 @@ class Uri implements UriInterface
 	{
 		$authority = $this->host;
 
-		if ($this->user !== '') {
+		if ($this->user != '') {
 			$userInfo = $this->user;
 
-			if ($this->pass !== '') {
+			if ($this->pass != '') {
 				$userInfo .= ':' . $this->pass;
 			}
 
 			$authority = $userInfo . '@' . $authority;
 		}
 
-		if ($this->port !== null) {
+		if ($this->port != null) {
 			$authority .= ':' . $this->port;
 		}
 
@@ -197,7 +195,7 @@ class Uri implements UriInterface
 	 */
 	public function withScheme($scheme)
 	{
-		if ($scheme === $this->scheme)
+		if (!strnatcasecmp($scheme, $this->scheme))
 			return $this;
 
 		$q = clone $this;
@@ -226,7 +224,7 @@ class Uri implements UriInterface
 	 */
 	public function withHost($host)
 	{
-		if ($host === $this->host)
+		if (!strnatcasecmp($host, $this->host))
 			return $this;
 
 		$filtered_host = $this->validateHost($host);
@@ -322,7 +320,7 @@ class Uri implements UriInterface
 	private function apply($uri_parts)
 	{
 		if (empty($uri_parts)) {
-			// throw the exception here..
+		    throw new \InvalidArgumentException("URI parts cannot be empty.");
 		}
 
 		$this->scheme = isset($uri_parts['scheme']) ? $uri_parts['scheme'] : '';
@@ -344,18 +342,18 @@ class Uri implements UriInterface
 	{
 		$uri = '';
 
-		if ($scheme !== '')
+		if ($scheme != '')
 			$uri .= $scheme . ':';
 
-		if ($authority !== '' || $scheme === 'file')
+		if ($authority != '' || $scheme == 'file')
 			$uri .= '//' . $authority;
 
 		$uri .= $path;
 
-		if ($query !== '')
+		if ($query != '')
 			$uri .= '?' . $query;
 
-		if ($fragment !== '')
+		if ($fragment != '')
 			$uri .= '#' . $fragment;
 
 		return $uri;
