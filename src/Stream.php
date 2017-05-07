@@ -69,7 +69,7 @@ class Stream implements StreamInterface
 		$this->metadata = stream_get_meta_data($this->stream);
 		$this->stat = fstat($this->stream);
 		$this->mode = $this->metadata['mode'];
-		$this->seekable = ($this->metadata['seekable'] === 1 ? true : false);
+		$this->seekable = ($this->metadata['seekable'] == 1 ? true : false);
 		$this->size = $this->stat['size'];
 	}
 
@@ -133,7 +133,7 @@ class Stream implements StreamInterface
 
 		$position = ftell($this->stream);
 
-		if (!$position)
+		if (false === $position)
 			throw new \RuntimeException("Unable to determine current stream position.");
 
 		return $position;
@@ -152,7 +152,7 @@ class Stream implements StreamInterface
 	 */
 	public function isWritable()
 	{
-		return (preg_match('~^(?:(?:(?:a|w)\+?)|(?:(?:r)\+{1}))(?:.*)$~', $this->mode)
+		return (preg_match('~(?(?=[wa]{1}.?)(?:[wa]{1}(?(?=(?:\+?(?:b?))?)(?:\+?(?:b?))?|(?:(?:b?)\+?)?))|(?:[r]{1}(?(?=\+{1}(?:b?))(?:\+{1}(?:b?))|(?:(?:b?)\+{1}))))~', $this->mode)
 			? true : false);
 	}
 
@@ -161,7 +161,7 @@ class Stream implements StreamInterface
 	 */
 	public function isReadable()
 	{
-		return (preg_match('~^(?:(?:r))(?:.*)$~', $this->mode) ? true : false);
+		return (preg_match('~^(?>(?:r))(.*)~', $this->mode) ? true : false);
 	}
 
 	/**
@@ -200,7 +200,7 @@ class Stream implements StreamInterface
 	 */
 	public function read($length)
 	{
-		if (!$this->isReadable())
+		if (false === $this->isReadable())
 			throw new \RuntimeException("The current stream is not readable.");
 
 		if ($length < 0)
@@ -208,7 +208,7 @@ class Stream implements StreamInterface
 
 		$buf = fread($this->stream, $length);
 
-		if (!$buf)
+		if (false === $buf)
 			throw new \RuntimeException("Unable to read data from current stream handle.");
 
 		return $buf;
@@ -219,12 +219,12 @@ class Stream implements StreamInterface
 	 */
 	public function write($string)
 	{
-		if (!$this->isWritable())
+		if (false === $this->isWritable())
 			throw new \RuntimeException("The current stream is not writable.");
 
 		$sz = fwrite($this->stream, $string);
 
-		if (!$sz)
+		if (false === $sz)
 			throw new \RuntimeException("Unable to write to current stream handle.");
 
 		return $sz;
@@ -248,12 +248,13 @@ class Stream implements StreamInterface
 	 */
 	public function getMetadata($key = null)
 	{
+	    if ($key === null)
+	        return $this->metadata;
+
 		if ($key !== null && array_key_exists($key, $this->metadata))
 			return $this->metadata[$key];
 
 		if (!array_key_exists($key, $this->metadata))
 			return null;
-
-		return $this->metadata;
 	}
 }
