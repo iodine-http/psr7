@@ -51,7 +51,7 @@ class Request implements RequestInterface
 	/**
 	 * A URI matching pattern based on https://tools.ietf.org/html/rfc7230#section-5.3.1
 	 */
-	const RFC7230_URI_ORIGIN_PATTERN = '~(?:(?:\/{1}[A-Za-z0-9\.\-\_]+)+)\?(?:(?:[a-zA-Z0-9\-\_]+\=[a-zA-Z0-9\-\_]+\&?)+)~';
+	const RFC7230_URI_ORIGIN_PATTERN = '~(?:(?:\/{1}[A-Za-z0-9\.\-\_]+)+)(?:\?(?:(?:[a-zA-Z0-9\-\_]+\=[a-zA-Z0-9\-\_]+\&?)+))?~';
 
 	/**
 	 * @var $requestTarget
@@ -85,7 +85,6 @@ class Request implements RequestInterface
 
 		$this->method = strtoupper($method);
 		$this->uri = $uri;
-		$this->setHeaders($headers);
 		$this->protocol = $this->protocolVersion;
 
 		if (!$this->hasHeader('Host')) {
